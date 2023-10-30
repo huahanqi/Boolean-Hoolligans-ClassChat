@@ -18,6 +18,7 @@ const EventList = () => {
           id={item.id}
           title={item.title}
           description={item.description}
+          wiki={item.wiki}
         />
       </View>
     );

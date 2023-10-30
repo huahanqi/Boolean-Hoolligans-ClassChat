@@ -18,7 +18,7 @@ export default function SignInPage(props) {
 
       <Text>Terms & Privacy Policy</Text>
 
-      <Button title="Start Message" onPress={handleSignIn} />
+      <Button title="Start Messaging" onPress={handleSignIn} />
     </SafeAreaView>
   );
 }
