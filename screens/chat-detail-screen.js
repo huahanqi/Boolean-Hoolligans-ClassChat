@@ -9,13 +9,20 @@ const ChatDetailScreen = ({ route, navigation }) => {
   const openGoogleDocs = () => {
     Linking.openURL(wiki);
   };
+  
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={styles.button}>
+          <Button title="Wiki" onPress={openGoogleDocs} />
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
       <Text>{`${title} message group`}</Text>
-      <View style={styles.button}>
-        <Button title="Wiki" onPress={openGoogleDocs} />
-      </View>
     </View>
   );
 };
@@ -29,9 +36,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  button : {
-    width: "5%",
-  }
 });
 
 export default ChatDetailScreen;
