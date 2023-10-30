@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 export const CourseStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Your Course" component={CourseScreen} />
+      <Stack.Screen name="Your Courses" component={CourseScreen} />
       <Stack.Screen name="Chat" component={ChatDetailScreen} />
     </Stack.Navigator>
   );

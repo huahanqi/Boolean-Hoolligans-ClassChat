@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
-const EventItem = ({ id, title, description }) => {
+const EventItem = ({ id, title, description, wiki }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -10,6 +10,7 @@ const EventItem = ({ id, title, description }) => {
         navigation.navigate("Chat", {
           title,
           description,
+          wiki,
         })
       }
     >
