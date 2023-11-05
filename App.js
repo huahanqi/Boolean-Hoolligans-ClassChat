@@ -9,14 +9,17 @@ import {
 } from "react-native";
 import "react-native-gesture-handler";
 import { AuthProvider } from "./context/AuthContext";
+import { CourseProvider } from './context/CourseContext';
 import AppNav from "./navigation/appNav";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppNav />
-      <StatusBar style="light" />
-    </AuthProvider>
+    <CourseProvider>
+      <AuthProvider>
+        <AppNav />
+        <StatusBar style="light" />
+      </AuthProvider>
+    </CourseProvider>
   );
 }
 
