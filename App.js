@@ -8,9 +8,9 @@ import {
   View,
 } from "react-native";
 import "react-native-gesture-handler";
-import { AuthProvider } from "./context/AuthContext";
-import { CourseProvider } from './context/CourseContext';
-import AppNav from "./navigation/appNav";
+import { AuthProvider } from "./frontend/context/AuthContext";
+import { CourseProvider } from './frontend/context/CourseContext';
+import AppNav from "./frontend/navigation/appNav";
 
 export default function App() {
   return (
