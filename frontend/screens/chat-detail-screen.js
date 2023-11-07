@@ -1,13 +1,33 @@
 // export default EventDetailScreen;
 
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Button, Linking, TextInput, KeyboardAvoidingView } from "react-native";
+import axios from 'axios';
+
+const API_ENDPOINT = "localhost:4000/api"
 
 const ChatDetailScreen = ({ route, navigation }) => {
   const { title, description, wiki } = route.params;
 
+  const [message, setMessage] = useState('');
+
   const openGoogleDocs = () => {
     Linking.openURL(wiki);
+  };
+
+  const sendMessage = async () => {
+    console.log(message)
+    const res = await axios({
+      method: 'post',
+      url: '/message',
+      params: {
+        name: title
+      },
+      data: {
+        message: msg,
+      }
+    });
+    comsole.log(res)
   };
   
   React.useLayoutEffect(() => {
@@ -26,8 +46,10 @@ const ChatDetailScreen = ({ route, navigation }) => {
         <TextInput
           style={styles.inputField}
           placeholder="Type a message"
+          value={message}
+          onChangeText={text => setMessage(text)}
         />
-        <Button title="Send" />
+        <Button title="Send" onPress={sendMessage}/>
       </View>
     </KeyboardAvoidingView>
   );
