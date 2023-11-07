@@ -1,35 +1,70 @@
 // export default EventDetailScreen;
 
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, Linking, TextInput, KeyboardAvoidingView } from "react-native";
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Linking,
+  TextInput,
+  KeyboardAvoidingView,
+  FlatList,
+} from "react-native";
+import axios from "axios";
+import ChatMessages from "../components/chats/chat-messages";
 
-const API_ENDPOINT = "localhost:4000/api"
+const API_ENDPOINT = "http://localhost:4000/api";
 
 const ChatDetailScreen = ({ route, navigation }) => {
   const { title, description, wiki } = route.params;
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+  const [totalMessage, setTotalMessage] = useState([]);
+  useEffect(() => {}, [totalMessage]);
 
   const openGoogleDocs = () => {
     Linking.openURL(wiki);
   };
 
   const sendMessage = async () => {
-    console.log(message)
-    const res = await axios({
-      method: 'post',
-      url: '/message',
-      params: {
-        name: title
-      },
-      data: {
-        message: msg,
-      }
-    });
-    comsole.log(res)
+    await axios
+      .post(
+        `${API_ENDPOINT}/message`,
+        {
+          message: message,
+        },
+        {
+          params: {
+            name: title,
+          },
+        }
+      )
+      .then((res) => {
+        getAllMessages().then((res) => {
+          console.log(res);
+          setTotalMessage(res);
+        });
+        // console.log(totalMessage);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
-  
+
+  const getAllMessages = async () => {
+    return axios
+      .get(`${API_ENDPOINT}/message`, {
+        params: {
+          name: title,
+        },
+      })
+      .then((res) => res.data)
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -42,14 +77,15 @@ const ChatDetailScreen = ({ route, navigation }) => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <ChatMessages messageData={totalMessage}></ChatMessages>
       <View style={styles.chatInput}>
         <TextInput
           style={styles.inputField}
           placeholder="Type a message"
           value={message}
-          onChangeText={text => setMessage(text)}
+          onChangeText={(text) => setMessage(text)}
         />
-        <Button title="Send" onPress={sendMessage}/>
+        <Button title="Send" onPress={sendMessage} />
       </View>
     </KeyboardAvoidingView>
   );
@@ -73,8 +109,8 @@ const styles = StyleSheet.create({
   chatInput: {
     flexDirection: "row",
     alignItems: "center",
-    bottom:0,
-    position:"absolute",
+    bottom: 0,
+    position: "absolute",
     width: "75%",
   },
   inputField: {
