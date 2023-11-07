@@ -21,6 +21,11 @@ const ChatDetailScreen = ({ route, navigation }) => {
 
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
+  useEffect(() => {
+    getAllMessages().then((initial) => {
+      setTotalMessage(initial);
+    });
+  }, []);
   useEffect(() => {}, [totalMessage]);
 
   const openGoogleDocs = () => {
@@ -42,9 +47,9 @@ const ChatDetailScreen = ({ route, navigation }) => {
       )
       .then((res) => {
         getAllMessages().then((res) => {
-          console.log(res);
           setTotalMessage(res);
         });
+        setMessage("");
         // console.log(totalMessage);
       })
       .catch((e) => {

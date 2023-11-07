@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Text, View, FlatList, RefreshControl } from "react-native";
-import EventItem from "../events/event-item";
 
 const ChatMessages = ({ messageData }) => {
-  console.log(messageData);
   const renderItem = ({ item }) => {
-    console.log(item.message);
     return (
       <View
         style={{
@@ -28,12 +25,7 @@ const ChatMessages = ({ messageData }) => {
         data={messageData}
         renderItem={renderItem}
         keyExtractor={(item, index) => index}
-        refreshControl={
-          <RefreshControl
-            refreshing={false}
-            onRefresh={() => console.log("refreshing")}
-          />
-        }
+        refreshControl={<RefreshControl refreshing={false} />}
       />
     </View>
   );
