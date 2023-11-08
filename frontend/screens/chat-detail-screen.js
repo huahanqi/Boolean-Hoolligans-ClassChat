@@ -25,6 +25,13 @@ const ChatDetailScreen = ({ route, navigation }) => {
 
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: title, // Set the title of the header dynamically
+    });
+  }, [title, navigation]);
+
   useEffect(() => {
     getAllMessages().then((initial) => {
       setTotalMessage(initial);
