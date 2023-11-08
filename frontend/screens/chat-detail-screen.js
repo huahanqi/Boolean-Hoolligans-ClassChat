@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
-import { Entypo, Feather } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 
 const API_ENDPOINT = "http://localhost:4000/api";
@@ -90,8 +90,8 @@ const ChatDetailScreen = ({ route, navigation }) => {
 
       <View style={styles.chatInput}>
         <View style={styles.camAndMic}>
-          <Entypo name="camera" size={24} color="gray" />
-          <Feather name="mic" size={24} color="gray" />
+          <Entypo name="camera" size={27} color="gray" />
+          <Entypo name="attachment" size={27} color="gray" />
         </View>
 
         <TextInput
