@@ -13,7 +13,7 @@ export const AddCourseScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [allCourses, setAllCourses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const { addCourse } = useContext(CourseContext);
+  const { courses, addCourse } = useContext(CourseContext);
 
 
     // Fetch allCourses from API 
@@ -45,6 +45,7 @@ export const AddCourseScreen = ({ navigation }) => {
 
   const handleAddCourse = (course) => {
     addCourse(course);
+    console.log(courses);
   };
 
   const renderItem = ({ item }) => (
