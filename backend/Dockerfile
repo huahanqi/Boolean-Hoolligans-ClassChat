@@ -14,4 +14,4 @@ RUN npm install
 CMD ["npm", "start"]
 
 # EXPOSE PORT
-EXPOSE 8080
+EXPOSE 4000
