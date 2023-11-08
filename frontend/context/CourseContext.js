@@ -10,10 +10,10 @@ export const CourseProvider = ({ children }) => {
   const addCourse = (newCourse) => {
     setCourses(prevCourses => {
         // Check if the course already exists based on id
-        const courseExists = prevCourses.some(course => course.id === newCourse.id);
+        const courseExists = prevCourses.some(course => course._id === newCourse._id);
         if (!courseExists) {
             const updatedCourses = [...prevCourses, newCourse];
-            updatedCourses.sort((a, b) => a.title.localeCompare(b.title));
+            updatedCourses.sort((a, b) => a.name.localeCompare(b.name));
             Alert.alert('Success', 'Course Chat Added! 🎉', [{ text: 'OK' }]);
             return updatedCourses;
         }
@@ -23,7 +23,7 @@ export const CourseProvider = ({ children }) => {
   };
 
   const deleteCourse = (courseToDelete) => {
-    setCourses(prevCourses => prevCourses.filter(course => course.id !== courseToDelete.id));
+    setCourses(prevCourses => prevCourses.filter(course => course._id !== courseToDelete._id));
   };
 
   return (

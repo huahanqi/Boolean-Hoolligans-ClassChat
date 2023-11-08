@@ -42,8 +42,8 @@ export const CourseScreen = () => {
       >
         <View> 
           <EventItem 
-          id={data.item.id} 
-          title={data.item.title} 
+          id={data.item._id} 
+          title={data.item.name} 
           description={data.item.description} 
           wiki={data.item.wiki} 
           />
