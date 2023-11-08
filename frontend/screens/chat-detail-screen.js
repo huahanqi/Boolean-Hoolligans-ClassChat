@@ -10,9 +10,13 @@ import {
   TextInput,
   KeyboardAvoidingView,
   FlatList,
+  ScrollView,
+  Pressable,
 } from "react-native";
 import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
+import { Entypo } from "@expo/vector-icons";
+
 
 const API_ENDPOINT = "http://localhost:4000/api";
 
@@ -21,6 +25,13 @@ const ChatDetailScreen = ({ route, navigation }) => {
 
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: title, // Set the title of the header dynamically
+    });
+  }, [title, navigation]);
+
   useEffect(() => {
     getAllMessages().then((initial) => {
       setTotalMessage(initial);
@@ -83,7 +94,13 @@ const ChatDetailScreen = ({ route, navigation }) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <ChatMessages messageData={totalMessage}></ChatMessages>
+
       <View style={styles.chatInput}>
+        <View style={styles.camAndMic}>
+          <Entypo name="camera" size={27} color="gray" />
+          <Entypo name="attachment" size={27} color="gray" />
+        </View>
+
         <TextInput
           style={styles.inputField}
           placeholder="Type a message"
@@ -116,15 +133,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     bottom: 0,
     position: "absolute",
-    width: "75%",
+    width: "110%",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#dddddd",
+    backgroundColor: "white",
   },
   inputField: {
     flex: 1,
-    borderColor: "gray",
+    borderColor: "#dddddd",
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 20,
     marginRight: 10,
     padding: 5,
+    height: 40,
+  },
+  camAndMic: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+    marginHorizontal: 8,
   },
 });
 

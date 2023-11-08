@@ -11,7 +11,11 @@ const ChatMessages = ({ messageData }) => {
           padding: 10,
           margin: 10,
           borderRadius: 10,
-          width: "70%",
+          minWidth: 30,
+          maxWidth: "80%",
+          borderRadius: 20,
+          paddingVertical: 10,
+          paddingHorizontal: 15,
         }}
       >
         <Text>{item.message}</Text>
@@ -26,6 +30,7 @@ const ChatMessages = ({ messageData }) => {
         renderItem={renderItem}
         keyExtractor={(item, index) => index}
         refreshControl={<RefreshControl refreshing={false} />}
+        style={{marginBottom: 55}}
       />
     </View>
   );
