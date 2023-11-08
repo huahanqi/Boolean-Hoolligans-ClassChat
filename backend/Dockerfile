@@ -11,7 +11,7 @@ COPY . /app
 RUN npm install
 
 # Define the entry point for the container
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
 
 # EXPOSE PORT
 EXPOSE 4000
