@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import { AntDesign } from '@expo/vector-icons'; 
-import { DUMMY_DATA } from "../data/dummy";
 import { CourseContext } from "../context/CourseContext";
 import axios from "axios";
 
@@ -45,7 +44,7 @@ export const AddCourseScreen = ({ navigation }) => {
 
   const handleAddCourse = (course) => {
     addCourse(course);
-    console.log(courses);
+    // console.log(courses);
   };
 
   const renderItem = ({ item }) => (
