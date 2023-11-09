@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { CourseContext } from "../context/CourseContext";
 import axios from "axios";
 
-const API_ENDPOINT = "http://localhost:4000/api";
+const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 
 export const AddCourseScreen = ({ navigation }) => {
