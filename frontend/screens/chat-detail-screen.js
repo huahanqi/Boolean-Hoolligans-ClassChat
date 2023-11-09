@@ -17,8 +17,8 @@ import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
 import { Entypo } from "@expo/vector-icons";
 
-
-const API_ENDPOINT = "http://localhost:4000/api";
+// const API_ENDPOINT = "http://localhost:4000/api";
+const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 const ChatDetailScreen = ({ route, navigation }) => {
   const { title, description, wiki } = route.params;
