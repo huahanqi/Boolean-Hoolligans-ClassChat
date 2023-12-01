@@ -62,7 +62,7 @@ export const AddCourseScreen = ({ navigation }) => {
         <Button
           style={styles.addButtonText}
           onPress={createCourse}
-          title={"Add new course chat"}
+          title={"Submit this course chat to list"}
         ></Button>
       </View>
     </TouchableWithoutFeedback>

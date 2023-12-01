@@ -17,16 +17,15 @@ import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
 import { Entypo } from "@expo/vector-icons";
 
-
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+const API_ENDPOINT = "http://localhost:4000/api";
+//const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 const ChatDetailScreen = ({ route, navigation }) => {
   const { title, description, wiki } = route.params;
 
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0
-
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 100 : 0;
 
   useEffect(() => {
     navigation.setOptions({
@@ -71,27 +70,27 @@ const ChatDetailScreen = ({ route, navigation }) => {
   };
 
   const deleteMessage = async (messageToDelete) => {
-
     const params = {
-      name: title,          
-      messageId: messageToDelete._id, 
+      name: title,
+      messageId: messageToDelete._id,
     };
-    console.log("Params:", params);
-    console.log(messageToDelete._id);
+    //console.log("Params:", params);
+    //console.log(messageToDelete._id);
     // console.log(totalMessage.filter(message => message._id !== messageToDelete._id));
 
     try {
-      await axios.delete(`${API_ENDPOINT}/message`, 
-      {
+      await axios.delete(`${API_ENDPOINT}/message`, {
         params: {
           name: title,
           messageId: messageToDelete._id,
         },
       });
-      console.log("success");
-  
+      //console.log("success");
+
       // After successful deletion, update the UI
-      const updatedMessages = totalMessage.filter(message => message._id !== messageToDelete._id);
+      const updatedMessages = totalMessage.filter(
+        (message) => message._id !== messageToDelete._id
+      );
       setTotalMessage(updatedMessages);
     } catch (error) {
       console.error("Error deleting message:", error);
@@ -129,12 +128,19 @@ const ChatDetailScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+      style={styles.container}
+    >
       <View style={styles.messagesContainer}>
-        <ChatMessages messageData={totalMessage} onDeleteMessage={onDeleteMessage}></ChatMessages>
+        <ChatMessages
+          messageData={totalMessage}
+          onDeleteMessage={onDeleteMessage}
+        ></ChatMessages>
       </View>
       <View style={styles.inputContainer}>
-        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
           <View style={styles.chatInput}>
             <View style={styles.camAndMic}>
               <Entypo name="camera" size={27} color="gray" />
@@ -204,7 +210,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     // This ensures the input area is positioned at the bottom
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
 });
 
