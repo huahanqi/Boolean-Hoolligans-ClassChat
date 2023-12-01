@@ -1,25 +1,50 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { addMessageToGroup, getMessagesByGroupName} = require('../controllers/message');
+const {
+  addMessageToGroup,
+  getMessagesByGroupName,
+  deleteMessages,
+} = require("../controllers/message");
 
-router.post('/', async (req, res) => {
-    try {
-        const newMessage = await addMessageToGroup(req.query.name, req.body.message);
-        res.status(200).send(newMessage)
-    } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
-    }
-})
+router.post("/", async (req, res) => {
+  try {
+    const newMessage = await addMessageToGroup(
+      req.query.name,
+      req.body.message
+    );
+    res.status(200).send(newMessage);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
 
-router.get('/', async (req, res) => {
-    try {
-        const groupMessages = await getMessagesByGroupName(req.query.name);
-        res.status(200).send(groupMessages)
-    } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
+router.get("/", async (req, res) => {
+  try {
+    const groupMessages = await getMessagesByGroupName(req.query.name);
+    res.status(200).send(groupMessages);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.delete("/", async (req, res) => {
+  try {
+    const deletedMessage = await deleteMessages(
+      req.query.name,
+      req.query.messageId
+    );
+    if (!deletedMessage) {
+      return next(
+        createCustomError(`No message with id : ${req.query.messageId}`, 404)
+      );
     }
-})
+    res.status(200).json({ deletedMessage });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
 
 module.exports = router;

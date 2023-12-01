@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
-import useAxios from 'axios-hooks';
+import useAxios from "axios-hooks";
 
 const defaultUser = {
-  casUser: 'Not authenticated',
+  casUser: "Not authenticated",
   admin: false,
   firstName: null,
   lastName: null,
@@ -11,13 +11,13 @@ const defaultUser = {
 export const AuthContext = createContext(defaultUser);
 
 export const AuthProvider = ({ children }) => {
-  // const [userToken, setUserToken] = useState(null);
+  const [userToken, setUserToken] = useState("default");
   const [isLoading, setIsLoading] = useState(false);
   // const [userInfo, setUserInfo] = useState(null);
 
   const [{ data }, fetchUser] = useAxios(
     {
-      url: '/cas/user',
+      url: "/cas/user",
     },
     { manual: true }
   );
@@ -40,9 +40,11 @@ export const AuthProvider = ({ children }) => {
   // };
   return (
     <>
-    {!isLoading && (
-      <AuthContext.Provider value={data}>{children}</AuthContext.Provider>
-    )}
-  </>
+      {!isLoading && (
+        <AuthContext.Provider value={{ isLoading, userToken }}>
+          {children}
+        </AuthContext.Provider>
+      )}
+    </>
   );
 };
