@@ -70,6 +70,34 @@ const ChatDetailScreen = ({ route, navigation }) => {
       });
   };
 
+  const deleteMessage = async (messageToDelete) => {
+
+    const params = {
+      name: title,          
+      messageId: messageToDelete._id, 
+    };
+    console.log("Params:", params);
+    console.log(messageToDelete._id);
+    // console.log(totalMessage.filter(message => message._id !== messageToDelete._id));
+
+    try {
+      await axios.delete(`${API_ENDPOINT}/message`, 
+      {
+        params: {
+          name: title,
+          messageId: messageToDelete._id,
+        },
+      });
+      console.log("success");
+  
+      // After successful deletion, update the UI
+      const updatedMessages = totalMessage.filter(message => message._id !== messageToDelete._id);
+      setTotalMessage(updatedMessages);
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  };
+
   const getAllMessages = async () => {
     return axios
       .get(`${API_ENDPOINT}/message`, {
@@ -81,6 +109,13 @@ const ChatDetailScreen = ({ route, navigation }) => {
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const onDeleteMessage = async (messageToDelete) => {
+    // Implement the logic to delete the message
+    // For example, calling an API to delete the message from the backend
+    // console.log("Delete message:", messageToDelete);
+    await deleteMessage(messageToDelete);
   };
 
   React.useLayoutEffect(() => {
@@ -96,7 +131,7 @@ const ChatDetailScreen = ({ route, navigation }) => {
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} style={styles.container}>
       <View style={styles.messagesContainer}>
-        <ChatMessages messageData={totalMessage}></ChatMessages>
+        <ChatMessages messageData={totalMessage} onDeleteMessage={onDeleteMessage}></ChatMessages>
       </View>
       <View style={styles.inputContainer}>
         <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
