@@ -1,27 +1,36 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const message = require('../models/message.js')
-const group = require('../models/group.js')
-
+const message = require("../models/message.js");
+const group = require("../models/group.js");
 
 const addMessageToGroup = async function (groupName, inputMessage) {
-    const groupDoc = await group.findOne({name: groupName});
-    const newMessage = await new message({
-        group: groupDoc._id,
-        message: inputMessage,
-        date: Date.now()
-    });
-    newMessage.save();
-    return newMessage
-}
+  const groupDoc = await group.findOne({ name: groupName });
+  const newMessage = await new message({
+    group: groupDoc._id,
+    message: inputMessage,
+    date: Date.now(),
+  });
+  newMessage.save();
+  return newMessage;
+};
 
 const getMessagesByGroupName = async function (groupName) {
-    const groupDoc = await group.findOne({name: groupName});
-    const messages = await message.find({
-        group: groupDoc._id,
-    });
-    return messages;
-}
+  const groupDoc = await group.findOne({ name: groupName });
+  const messages = await message.find({
+    group: groupDoc._id,
+  });
+  return messages;
+};
+
+const deleteMessages = async (groupName, messageId) => {
+  const groupDoc = await group.findOne({ name: groupName });
+  const deletingMessage = await message.findOneAndDelete({
+    group: groupDoc._id,
+    _id: messageId,
+  });
+  return deletingMessage;
+};
 
 exports.addMessageToGroup = addMessageToGroup;
-exports.getMessagesByGroupName = getMessagesByGroupName
+exports.getMessagesByGroupName = getMessagesByGroupName;
+exports.deleteMessages = deleteMessages;
