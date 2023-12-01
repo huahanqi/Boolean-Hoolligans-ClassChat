@@ -11,8 +11,8 @@ import axios from "axios";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Alert } from "react-native";
 
-//const API_ENDPOINT = "http://localhost:4000/api";
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+const API_ENDPOINT = "http://localhost:4000/api";
+//const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 export const AddCourseScreen = ({ navigation }) => {
   const [group, setGroup] = useState({
@@ -24,8 +24,8 @@ export const AddCourseScreen = ({ navigation }) => {
     await axios
       .post(`${API_ENDPOINT}/group`, {
         name: group.name,
-        //description: group.description,
-        //wiki: task.wiki,
+        description: group.description,
+        wiki: group.wiki,
       })
       .then((res) => {
         Alert.alert("Success", `Course Chat for ${res.data.name} Created! 🎉`, [
@@ -33,8 +33,24 @@ export const AddCourseScreen = ({ navigation }) => {
         ]);
       })
       .catch((e) => {
-        console.log(e);
+        if (e.response.status == 400) {
+          Alert.alert("Validation Failed", `This course chat already exists`, [
+            { text: "OK" },
+          ]);
+        } else {
+          console.log(e);
+        }
       });
+  };
+
+  const onSubmit = () => {
+    if (group.name == "" || group.wiki == "" || group.description == "") {
+      Alert.alert("Submission Failed", `Information Entered not Valid`, [
+        { text: "Try Again" },
+      ]);
+    } else {
+      createCourse();
+    }
   };
 
   return (
@@ -61,7 +77,7 @@ export const AddCourseScreen = ({ navigation }) => {
         />
         <Button
           style={styles.addButtonText}
-          onPress={createCourse}
+          onPress={onSubmit}
           title={"Submit this course chat to list"}
         ></Button>
       </View>
