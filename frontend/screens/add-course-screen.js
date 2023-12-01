@@ -3,10 +3,11 @@ import {
   View,
   Text,
   TextInput,
-  FlatList,
+  // FlatList,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import { CourseContext } from "../context/CourseContext";
 import axios from "axios";
