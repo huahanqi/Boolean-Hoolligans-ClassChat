@@ -6,11 +6,15 @@ const {
   deleteMessages,
 } = require("../controllers/message");
 
-router.post("/", async (req, res) => {
+const { verifyToken } = require('../middleware/token')
+
+router.post("/",verifyToken, async (req, res) => {
+  console.log(req.query)
   try {
     const newMessage = await addMessageToGroup(
       req.query.name,
-      req.body.message
+      req.body.message,
+      req.user
     );
     res.status(200).send(newMessage);
   } catch (error) {

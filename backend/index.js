@@ -13,6 +13,10 @@ const server = http.createServer(app);
 
 const group = require('./routes/group.js')
 const message = require('./routes/message.js')
+const user = require('./routes/user.js')
+
+
+app.use('/api/user', user);
 app.use('/api/group', group);
 app.use('/api/message', message);
 
