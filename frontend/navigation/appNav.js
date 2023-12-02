@@ -26,7 +26,8 @@ export default function AppNav() {
   }
   return (
     <NavigationContainer>
-      {userToken !== null ? <HomeTabs /> : <AuthStack />}
+      {/* {userToken !== null ? <HomeTabs /> : <AuthStack />} */}
+      <AuthStack />
       <StatusBar style="light" />
     </NavigationContainer>
   );
