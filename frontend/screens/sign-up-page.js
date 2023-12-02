@@ -4,6 +4,8 @@ import { AuthContext } from "../context/AuthContext";
 import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 export default function SignUpPage(props) {
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
+
   const { signUp } = useContext(AuthContext);
 
   // You may need additional state for the new user details
