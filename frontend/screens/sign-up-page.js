@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Alert } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
 
@@ -18,7 +18,13 @@ export default function SignUpPage(props) {
     // You will likely want to check if the passwords match,
     // if the email is valid, and if all fields are filled out.
     // Then you would call your sign up function from context.
-    signUp(email, password);
+
+    if (email.toLowerCase().endsWith("@gatech.edu")) {
+        // signUp(email, password);
+        Alert.alert("Success! \nNow back to login page 😄");
+    } else {
+        Alert.alert("Please use a valid GT email address.");
+    }
   };
 
   return (
@@ -48,6 +54,7 @@ export default function SignUpPage(props) {
 
                 <TextInput
                     placeholder="Your GT Email"
+                    onChangeText={(text) => setEmail(text)}
                     placeholderTextColor={'gray'}
                     style={{ fontSize: 16 }}
                 />
