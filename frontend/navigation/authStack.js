@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import LoginInPage from "../screens/login-in-page";
+import LoginPage from "../screens/login-page";
 import SignUpPage from "../screens/sign-up-page";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -9,7 +9,7 @@ export const AuthStack = () => {
     <Stack.Navigator>
       <Stack.Screen
         name="login"
-        component={LoginInPage}
+        component={LoginPage}
         options={{ title: "GT Class Chat" }}
       />
       <Stack.Screen

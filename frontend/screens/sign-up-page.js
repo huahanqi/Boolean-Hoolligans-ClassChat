@@ -82,19 +82,6 @@ export default function SignUpPage(props) {
                     <Text style={{color:"white", alignSelf: 'center', fontSize: 16}}>Sign Up</Text>
                 </TouchableOpacity>
             </Animated.View>
-
-            <Animated.View 
-                entering={FadeInDown.delay(600).duration(1000).springify()} 
-                style={{
-                    flexDirection: 'row', // flex-row
-                    justifyContent: 'center', // justify-center
-                }}>
-
-                <Text>Don't have an account? </Text>
-                <TouchableOpacity >
-                    <Text style={{color: '#000080', fontWeight: 'bold',}}>SignUp</Text>
-                </TouchableOpacity>
-            </Animated.View>
             </View>
 
         {/* <Button title="Start Messaging" onPress={handleSignIn} /> */}

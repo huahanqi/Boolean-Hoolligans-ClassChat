@@ -3,14 +3,15 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, SafeAreaVi
 import { AuthContext } from "../context/AuthContext";
 import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
 
-export default function LoginInPage(props) {
+export default function LoginPage(props) {
 
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
 
   const { login } = useContext(AuthContext);
 
   const handleLogin = () => {
-    login();
+    // login();
+    props.navigation.navigate("Home");
   };
 
   return (
