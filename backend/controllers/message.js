@@ -2,10 +2,13 @@ const mongoose = require("mongoose");
 
 const message = require("../models/message.js");
 const group = require("../models/group.js");
+const user = require("../models/user.js");
 
-const addMessageToGroup = async function (groupName, inputMessage) {
+const addMessageToGroup = async function (groupName, inputMessage, user) {
+  // const userDoc = await user.findById(user.userId)
   const groupDoc = await group.findOne({ name: groupName });
   const newMessage = await new message({
+    user: user.userId,
     group: groupDoc._id,
     message: inputMessage,
     date: Date.now(),
@@ -18,7 +21,10 @@ const getMessagesByGroupName = async function (groupName) {
   const groupDoc = await group.findOne({ name: groupName });
   const messages = await message.find({
     group: groupDoc._id,
-  });
+  }).populate({
+    path: 'user',
+    select: 'username firstName lastName' // specify the fields to include
+  }).exec();
   return messages;
 };
 
