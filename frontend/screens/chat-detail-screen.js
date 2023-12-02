@@ -9,10 +9,11 @@ import {
   Linking,
   TextInput,
   KeyboardAvoidingView,
-  FlatList,
+  // FlatList,
   ScrollView,
   Pressable,
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
 import { Entypo } from "@expo/vector-icons";

@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import {
   ActivityIndicator,
@@ -13,6 +14,9 @@ import { AuthContext, AuthProvider } from "../context/AuthContext";
 import { useContext } from "react";
 import { HomeTabs } from "./tabs";
 
+const MainStack = createStackNavigator();
+
+
 export default function AppNav() {
   const { isLoading, userToken } = useContext(AuthContext);
   if (isLoading) {
@@ -26,7 +30,11 @@ export default function AppNav() {
   }
   return (
     <NavigationContainer>
-      {userToken !== null ? <HomeTabs /> : <AuthStack />}
+      {/* {userToken !== null ? <HomeTabs /> : <AuthStack />} */}
+      <MainStack.Navigator>
+        <MainStack.Screen name="Auth" component={AuthStack} options={{ headerShown: false }} />
+        <MainStack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
+      </MainStack.Navigator>
       <StatusBar style="light" />
     </NavigationContainer>
   );
