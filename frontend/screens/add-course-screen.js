@@ -6,6 +6,7 @@ import {
   // FlatList,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
@@ -20,6 +21,7 @@ export const AddCourseScreen = ({ navigation }) => {
   const [allCourses, setAllCourses] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const { courses, addCourse } = useContext(CourseContext);
+  const [showImage, setShowImage] = useState(true);
 
   // Fetch allCourses from API
   useEffect(() => {
@@ -33,6 +35,16 @@ export const AddCourseScreen = ({ navigation }) => {
     };
     fetchGroups();
   }, []); // The empty array ensures this effect runs once after the component mounts
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowImage(false);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []); 
+
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -79,25 +91,36 @@ export const AddCourseScreen = ({ navigation }) => {
   );
 
   return (
-    <View>
-      <View style={styles.searchContainer}>
-        <AntDesign name="search1" size={20} style={styles.searchIcon} />
-        <TextInput
-          placeholder="Search courses"
-          value={searchQuery}
-          onChangeText={handleSearch}
-          style={styles.searchInput}
-        />
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <View style={styles.searchContainer}>
+          <AntDesign name="search1" size={20} style={styles.searchIcon} />
+          <TextInput
+            placeholder="Search courses"
+            value={searchQuery}
+            onChangeText={handleSearch}
+            style={styles.searchInput}
+          />
+        </View>
+        {searchQuery.trim() && (
+          <FlatList
+            data={filteredData}
+            keyExtractor={(item) => item._id.toString()}
+            renderItem={renderItem}
+            style={{ marginTop: 10, flex: 1 }}
+          />
+        )}
       </View>
-      {searchQuery.trim() && (
-        <FlatList
-          data={filteredData}
-          keyExtractor={(item) => item._id.toString()}
-          renderItem={renderItem}
-          style={{ marginTop: 10 }}
-        />
+      {showImage && (
+        <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/logos/mcdonalds_ad.jpg")}
+          />
+        </View>
       )}
     </View>
+
   );
 };
 
