@@ -13,9 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { CourseContext } from "../context/CourseContext";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-
-const API_ENDPOINT = "http://localhost:4000/api";
-// const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+import { API_ENDPOINT } from "../config";
 
 export const AddCourseScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");

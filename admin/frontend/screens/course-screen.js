@@ -15,13 +15,13 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
-
-//const API_ENDPOINT = "http://localhost:4000/api";
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+import { AuthContext } from "../context/AuthContext";
+import { API_ENDPOINT } from "../../config";
 
 export const CourseScreen = () => {
   const [allCourses, setAllCourses] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const { userToken } = useContext(AuthContext);
 
   const refreshPage = () => {
     setRefresh(true);
@@ -31,7 +31,11 @@ export const CourseScreen = () => {
 
   const fetchGroups = async () => {
     try {
-      const response = await axios.get(`${API_ENDPOINT}/group`);
+      const response = await axios.get(`${API_ENDPOINT}/group`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
       setAllCourses(response.data);
     } catch (error) {
       console.error("Failed to fetch groups:", error);

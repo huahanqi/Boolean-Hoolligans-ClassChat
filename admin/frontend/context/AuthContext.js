@@ -1,11 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { Alert } from "react-native";
+import { API_ENDPOINT } from "../../config";
 
 export const AuthContext = createContext();
-
-const API_ENDPOINT = "http://localhost:4000/api";
-//const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
