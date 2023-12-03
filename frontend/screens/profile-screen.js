@@ -1,14 +1,26 @@
-import { Text, StyleSheet, SafeAreaView, Image, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  View,
+  Button,
+} from "react-native";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export const ProfilesScreen = () => {
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, userToken, setUserInfo, setUserToken } =
+    useContext(AuthContext);
   //const [showPassword, setShowPassWord] = useState(false);
   // const handleClickIcon = () => {
   //   curr = !showPassword;
   //   setShowPassWord(curr);
   // };
+  const logout = () => {
+    setUserInfo(null);
+    setUserToken(null);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -20,6 +32,7 @@ export const ProfilesScreen = () => {
         <Text style={styles.text}>
           {`Email Address: ${userInfo.username}`}{" "}
         </Text>
+        <Button onPress={logout} title="Log out" color="#841584" />
         {/* {!showPassword ? (
           <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={styles.text}>{`Password: ${"*".repeat(

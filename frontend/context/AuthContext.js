@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     axios
       .post(`${API_ENDPOINT}/user/login`, {
-        username: email,
+        username: email.toLowerCase(),
         password,
       })
       .then((res) => {
@@ -43,10 +43,10 @@ export const AuthProvider = ({ children }) => {
         admin: false,
       })
       .then((res) => {
-        console.log(res);
+        Alert.alert("Success! \nNow back to login page 😄");
       })
       .catch((e) => {
-        console.log(e);
+        Alert.alert("Register Failed. Double check info entered");
       });
     setIsLoading(false);
   };

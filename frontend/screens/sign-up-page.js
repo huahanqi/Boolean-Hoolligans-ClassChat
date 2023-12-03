@@ -1,98 +1,139 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image, KeyboardAvoidingView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+  Alert,
+} from "react-native";
 import { AuthContext } from "../context/AuthContext";
-import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+} from "react-native-reanimated";
 
 export default function SignUpPage(props) {
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
-  const { signUp } = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
 
   // You may need additional state for the new user details
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSignUp = () => {
     // Implement your sign up logic here
     // You will likely want to check if the passwords match,
     // if the email is valid, and if all fields are filled out.
     // Then you would call your sign up function from context.
-
-    if (email.toLowerCase().endsWith("@gatech.edu")) {
-        // signUp(email, password);
-        Alert.alert("Success! \nNow back to login page 😄");
-    } else {
-        Alert.alert("Please use a valid GT email address.");
+    if (
+      userName == "" ||
+      email == "" ||
+      password == "" ||
+      confirmPassword == ""
+    ) {
+      Alert.alert("Please fill out all fields.");
     }
+    if (password != confirmPassword) {
+      Alert.alert("Please make sure your passwords match");
+    }
+
+    if (!email.toLowerCase().endsWith("@gatech.edu")) {
+      Alert.alert("Please use a valid GT email address.");
+    }
+
+    register(email, password, userName);
   };
 
   return (
-    <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
-        <SafeAreaView style={styles.container}>
+    <KeyboardAvoidingView
+      behavior="position"
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
+      <SafeAreaView style={styles.container}>
         <Image
-            style={styles.logo}
-            source={require("../assets/logos/login.png")}
+          style={styles.logo}
+          source={require("../assets/logos/login.png")}
         ></Image>
-        <Text style={styles.heading}>Connect Easily with College Classmates</Text>
+        <Text style={styles.heading}>
+          Connect Easily with College Classmates
+        </Text>
         <Text style={{ paddingBottom: 10 }}>Terms & Privacy Policy</Text>
 
         <View>
-                <Animated.View 
-                entering={FadeInDown.duration(1000).springify()} 
-                style={styles.email}>
+          <Animated.View
+            entering={FadeInDown.duration(1000).springify()}
+            style={styles.email}
+          >
+            <TextInput
+              placeholder="Your Username"
+              placeholderTextColor={"gray"}
+              style={{ fontSize: 16 }}
+              value={userName}
+              onChangeText={(text) => setUserName(text)}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInDown.duration(1000).springify()}
+            style={styles.email}
+          >
+            <TextInput
+              placeholder="Your GT Email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              placeholderTextColor={"gray"}
+              style={{ fontSize: 16 }}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInDown.delay(200).duration(1000).springify()}
+            style={styles.password}
+          >
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={"gray"}
+              secureTextEntry
+              style={{ fontSize: 16 }}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInDown.delay(200).duration(1000).springify()}
+            style={styles.password}
+          >
+            <TextInput
+              placeholder="Confirm Password"
+              placeholderTextColor={"gray"}
+              secureTextEntry
+              style={{ fontSize: 16 }}
+              value={confirmPassword}
+              onChangeText={(text) => setConfirmPassword(text)}
+            />
+          </Animated.View>
 
-                <TextInput
-                    placeholder="Your Username"
-                    placeholderTextColor={'gray'}
-                    style={{ fontSize: 16 }}
-                />
-            </Animated.View>
-            <Animated.View 
-                entering={FadeInDown.duration(1000).springify()} 
-                style={styles.email}>
-
-                <TextInput
-                    placeholder="Your GT Email"
-                    onChangeText={(text) => setEmail(text)}
-                    placeholderTextColor={'gray'}
-                    style={{ fontSize: 16 }}
-                />
-            </Animated.View>
-            <Animated.View 
-                entering={FadeInDown.delay(200).duration(1000).springify()} 
-                style={styles.password}>
-
-                <TextInput
-                    placeholder="Password"
-                    placeholderTextColor={'gray'}
-                    secureTextEntry
-                    style={{ fontSize: 16 }}
-                />
-            </Animated.View>
-            <Animated.View 
-                entering={FadeInDown.delay(200).duration(1000).springify()} 
-                style={styles.password}>
-
-                <TextInput
-                    placeholder="Confirm Password"
-                    placeholderTextColor={'gray'}
-                    secureTextEntry
-                    style={{ fontSize: 16 }}
-                />
-            </Animated.View>
-
-            <Animated.View 
-                entering={FadeInDown.delay(400).duration(1000).springify()}>
-                <TouchableOpacity 
-                    style={styles.loginButton} onPress={handleSignUp}>
-                    <Text style={{color:"white", alignSelf: 'center', fontSize: 16}}>Sign Up</Text>
-                </TouchableOpacity>
-            </Animated.View>
-            </View>
+          <Animated.View
+            entering={FadeInDown.delay(400).duration(1000).springify()}
+          >
+            <TouchableOpacity style={styles.loginButton} onPress={handleSignUp}>
+              <Text
+                style={{ color: "white", alignSelf: "center", fontSize: 16 }}
+              >
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
 
         {/* <Button title="Start Messaging" onPress={handleSignIn} /> */}
-        </SafeAreaView>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }
@@ -143,28 +184,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   email: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Light gray background
+    backgroundColor: "rgba(0, 0, 0, 0.05)", // Light gray background
     paddingVertical: 10, // Reduced vertical padding
     paddingHorizontal: 15, // Horizontal padding
     borderRadius: 10, // Rounded corners
-    width: '100%', // Width of the TextInput
+    width: "100%", // Width of the TextInput
     height: 45, // Fixed height
     marginBottom: 10, // Margin at the bottom
     width: 300,
   },
   password: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Light gray background
+    backgroundColor: "rgba(0, 0, 0, 0.05)", // Light gray background
     paddingVertical: 10, // Reduced vertical padding
     paddingHorizontal: 20, // Horizontal padding
     borderRadius: 10, // Rounded corners
-    width: '100%', // Width of the TextInput
+    width: "100%", // Width of the TextInput
     height: 45, // Fixed height
     marginBottom: 10, // Margin at the bottom
     width: 300,
   },
   loginButton: {
-    width: '100%', // w-full
-    backgroundColor: '#000080',
+    width: "100%", // w-full
+    backgroundColor: "#000080",
     padding: 12, // p-3
     borderRadius: 15, // rounded-2xl
     marginBottom: 12, // mb-3
