@@ -1,6 +1,6 @@
 // export default EventDetailScreen;
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -17,17 +17,19 @@ import { FlatList } from "react-native-gesture-handler";
 import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
 import { Entypo } from "@expo/vector-icons";
+import { AuthContext } from "../context/AuthContext";
 
-
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+const API_ENDPOINT = "http://localhost:4000/api";
+//const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 const ChatDetailScreen = ({ route, navigation }) => {
   const { title, description, wiki } = route.params;
 
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 100 : 0;
 
+  const { userToken } = useContext(AuthContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -57,6 +59,9 @@ const ChatDetailScreen = ({ route, navigation }) => {
           params: {
             name: title,
           },
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
         }
       )
       .then((res) => {
@@ -77,6 +82,9 @@ const ChatDetailScreen = ({ route, navigation }) => {
         params: {
           name: title,
         },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
       })
       .then((res) => res.data)
       .catch((e) => {
@@ -95,12 +103,16 @@ const ChatDetailScreen = ({ route, navigation }) => {
   }, [navigation]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={keyboardVerticalOffset} style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+      style={styles.container}
+    >
       <View style={styles.messagesContainer}>
         <ChatMessages messageData={totalMessage}></ChatMessages>
       </View>
       <View style={styles.inputContainer}>
-        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
           <View style={styles.chatInput}>
             <View style={styles.camAndMic}>
               <Entypo name="camera" size={27} color="gray" />
@@ -170,7 +182,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     // This ensures the input area is positioned at the bottom
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
 });
 
