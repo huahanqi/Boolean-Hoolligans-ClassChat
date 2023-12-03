@@ -1,75 +1,123 @@
-import React, { useContext } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, SafeAreaView, Image, KeyboardAvoidingView } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+} from "react-native";
 import { AuthContext } from "../context/AuthContext";
-import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+} from "react-native-reanimated";
+import { Alert } from "react-native";
 
 export default function LoginPage(props) {
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
 
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0
+  const { login, userToken } = useContext(AuthContext);
 
-  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // login();
-    props.navigation.navigate("Home");
+    if (email.trim() === "" && password.trim() === "") {
+      Alert.alert("email and password required");
+    } else if (email.trim() === "") {
+      Alert.alert("email required");
+    } else if (password.trim() === "") {
+      Alert.alert("password required");
+    } else {
+      login(email, password);
+      console.log(userToken);
+      if (userToken != null) {
+        props.navigation.navigate("Home");
+      } else {
+        Alert.alert("Login failed", `Invalid user information`, [
+          { text: "Try again" },
+        ]);
+      }
+    }
   };
 
   return (
-    <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={keyboardVerticalOffset}>
+    <KeyboardAvoidingView
+      behavior="position"
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
       <SafeAreaView style={styles.container}>
         <Image
           style={styles.logo}
           source={require("../assets/logos/login.png")}
         ></Image>
-        <Text style={styles.heading}>Connect Easily with College Classmates</Text>
+        <Text style={styles.heading}>
+          Connect Easily with College Classmates
+        </Text>
 
         <Text style={{ paddingBottom: 10 }}>Terms & Privacy Policy</Text>
 
         <View>
-                  <Animated.View 
-                      entering={FadeInDown.duration(1000).springify()} 
-                      style={styles.email}>
+          <Animated.View
+            entering={FadeInDown.duration(1000).springify()}
+            style={styles.email}
+          >
+            <TextInput
+              placeholder="Your GT Email"
+              placeholderTextColor={"gray"}
+              style={{ fontSize: 16 }}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInDown.delay(200).duration(1000).springify()}
+            style={styles.password}
+          >
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={"gray"}
+              secureTextEntry
+              style={{ fontSize: 16 }}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </Animated.View>
 
-                      <TextInput
-                          placeholder="Your GT Email"
-                          placeholderTextColor={'gray'}
-                          style={{ fontSize: 16 }}
-                      />
-                  </Animated.View>
-                  <Animated.View 
-                      entering={FadeInDown.delay(200).duration(1000).springify()} 
-                      style={styles.password}>
+          <Animated.View
+            entering={FadeInDown.delay(400).duration(1000).springify()}
+          >
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text
+                style={{ color: "white", alignSelf: "center", fontSize: 16 }}
+              >
+                Login
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
 
-                      <TextInput
-                          placeholder="Password"
-                          placeholderTextColor={'gray'}
-                          secureTextEntry
-                          style={{ fontSize: 16 }}
-                      />
-                  </Animated.View>
-
-                  <Animated.View 
-                      entering={FadeInDown.delay(400).duration(1000).springify()}>
-                      <TouchableOpacity 
-                        style={styles.loginButton}
-                        onPress={handleLogin}>
-                          <Text style={{color:"white", alignSelf: 'center', fontSize: 16}}>Login</Text>
-                      </TouchableOpacity>
-                  </Animated.View>
-
-                  <Animated.View 
-                      entering={FadeInDown.delay(600).duration(1000).springify()} 
-                      style={{
-                        flexDirection: 'row', // flex-row
-                        justifyContent: 'center', // justify-center
-                      }}>
-
-                      <Text>Don't have an account? </Text>
-                      <TouchableOpacity onPress={() => props.navigation.navigate('sign_up')}>
-                          <Text style={{color: '#000080', fontWeight: 'bold',}}>SignUp</Text>
-                      </TouchableOpacity>
-                  </Animated.View>
-              </View>
+          <Animated.View
+            entering={FadeInDown.delay(600).duration(1000).springify()}
+            style={{
+              flexDirection: "row", // flex-row
+              justifyContent: "center", // justify-center
+            }}
+          >
+            <Text>Don't have an account? </Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate("sign_up")}
+            >
+              <Text style={{ color: "#000080", fontWeight: "bold" }}>
+                SignUp
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
 
         {/* <Button title="Start Messaging" onPress={handleSignIn} /> */}
       </SafeAreaView>
@@ -123,28 +171,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   email: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Light gray background
+    backgroundColor: "rgba(0, 0, 0, 0.05)", // Light gray background
     paddingVertical: 10, // Reduced vertical padding
     paddingHorizontal: 15, // Horizontal padding
     borderRadius: 10, // Rounded corners
-    width: '100%', // Width of the TextInput
+    width: "100%", // Width of the TextInput
     height: 45, // Fixed height
     marginBottom: 10, // Margin at the bottom
     width: 300,
   },
   password: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Light gray background
+    backgroundColor: "rgba(0, 0, 0, 0.05)", // Light gray background
     paddingVertical: 10, // Reduced vertical padding
     paddingHorizontal: 20, // Horizontal padding
     borderRadius: 10, // Rounded corners
-    width: '100%', // Width of the TextInput
+    width: "100%", // Width of the TextInput
     height: 45, // Fixed height
     marginBottom: 10, // Margin at the bottom
     width: 300,
   },
   loginButton: {
-    width: '100%', // w-full
-    backgroundColor: '#000080',
+    width: "100%", // w-full
+    backgroundColor: "#000080",
     padding: 12, // p-3
     borderRadius: 15, // rounded-2xl
     marginBottom: 12, // mb-3
