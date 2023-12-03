@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const login = (email, password) => {
     setIsLoading(true);
     axios
-      .post(`${API_ENDPOINT}/user/login`, {
+      .post(`${API_ENDPOINT}/user/adminLogin`, {
         username: email.toLowerCase(),
         password,
       })
@@ -31,32 +31,12 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  const register = (email, password, username) => {
-    setIsLoading(true);
-    axios
-      .post(`${API_ENDPOINT}/user/register`, {
-        username: email.toLowerCase(),
-        password,
-        firstName: username,
-        lastName: username,
-        admin: false,
-      })
-      .then((res) => {
-        Alert.alert("Success! \nNow back to login page 😄");
-      })
-      .catch((e) => {
-        Alert.alert("Register Failed. Double check info entered");
-      });
-    setIsLoading(false);
-  };
-
   return (
     <>
       {!isLoading && (
         <AuthContext.Provider
           value={{
             login,
-            register,
             userToken,
             isLoading,
             userInfo,

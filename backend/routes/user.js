@@ -31,4 +31,23 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// admin Login route
+router.post("/adminLogin", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    let user = await User.findOne({ username });
+    if (
+      !user ||
+      !(await bcrypt.compare(password, user.password)) ||
+      !user.admin
+    ) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const token = jwt.sign({ userId: user._id }, "secret");
+    res.status(200).json({ token, user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
