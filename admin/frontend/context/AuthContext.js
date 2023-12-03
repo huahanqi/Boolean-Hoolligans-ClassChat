@@ -1,28 +1,73 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
+import { Alert } from "react-native";
 
 export const AuthContext = createContext();
+
+const API_ENDPOINT = "http://localhost:4000/api";
+//const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const login = () => {
-    setUserInfo("res.data.user");
-    setUserToken("res.data.token");
+
+  const login = (email, password) => {
+    setIsLoading(true);
+    axios
+      .post(`${API_ENDPOINT}/user/login`, {
+        username: email.toLowerCase(),
+        password,
+      })
+      .then((res) => {
+        setUserInfo(res.data.user);
+        setUserToken(res.data.token);
+      })
+      .catch((e) => {
+        Alert.alert("Login failed", `Invalid user information`, [
+          { text: "Try again" },
+        ]);
+      });
+    setIsLoading(false);
   };
+
+  const register = (email, password, username) => {
+    setIsLoading(true);
+    axios
+      .post(`${API_ENDPOINT}/user/register`, {
+        username: email.toLowerCase(),
+        password,
+        firstName: username,
+        lastName: username,
+        admin: false,
+      })
+      .then((res) => {
+        Alert.alert("Success! \nNow back to login page 😄");
+      })
+      .catch((e) => {
+        Alert.alert("Register Failed. Double check info entered");
+      });
+    setIsLoading(false);
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        login,
-        userToken,
-        isLoading,
-        userInfo,
-        setIsLoading,
-        setUserInfo,
-        setUserToken,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <>
+      {!isLoading && (
+        <AuthContext.Provider
+          value={{
+            login,
+            register,
+            userToken,
+            isLoading,
+            userInfo,
+            setIsLoading,
+            setUserInfo,
+            setUserToken,
+          }}
+        >
+          {children}
+        </AuthContext.Provider>
+      )}
+    </>
   );
 };

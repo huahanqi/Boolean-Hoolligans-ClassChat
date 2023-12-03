@@ -1,25 +1,108 @@
-import React, { useContext } from "react";
-import { Text, StyleSheet, Button, SafeAreaView, Image } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+  SafeAreaView,
+  Image,
+  KeyboardAvoidingView,
+} from "react-native";
 import { AuthContext } from "../context/AuthContext";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+} from "react-native-reanimated";
+import { Alert } from "react-native";
 
-export default function SignInPage(props) {
-  const { login } = useContext(AuthContext);
-  const handleSignIn = () => {
-    login();
+export default function LoginPage(props) {
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 40 : 0;
+
+  const { login, userToken } = useContext(AuthContext);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    if (email.trim() === "" && password.trim() === "") {
+      Alert.alert("email and password required");
+    } else if (email.trim() === "") {
+      Alert.alert("email required");
+    } else if (password.trim() === "") {
+      Alert.alert("password required");
+    } else {
+      login(email, password);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require("../assets/logos/login.png")}
-      ></Image>
-      <Text style={styles.heading}>Connect Easily with College Classmates</Text>
+    <KeyboardAvoidingView
+      behavior="position"
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
+      <SafeAreaView style={styles.container}>
+        <Image
+          style={styles.logo}
+          source={require("../assets/logos/login.png")}
+        ></Image>
+        <Text style={styles.heading}>Administrator Platform</Text>
 
-      <Text>Terms & Privacy Policy</Text>
+        <Text style={{ paddingBottom: 10 }}>Terms & Privacy Policy</Text>
 
-      <Button title="Start Messaging" onPress={handleSignIn} />
-    </SafeAreaView>
+        <View>
+          <Animated.View
+            entering={FadeInDown.duration(1000).springify()}
+            style={styles.email}
+          >
+            <TextInput
+              placeholder="Your GT Email"
+              placeholderTextColor={"gray"}
+              style={{ fontSize: 16 }}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+          </Animated.View>
+          <Animated.View
+            entering={FadeInDown.delay(200).duration(1000).springify()}
+            style={styles.password}
+          >
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={"gray"}
+              secureTextEntry
+              style={{ fontSize: 16 }}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </Animated.View>
+
+          <Animated.View
+            entering={FadeInDown.delay(400).duration(1000).springify()}
+          >
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text
+                style={{ color: "white", alignSelf: "center", fontSize: 16 }}
+              >
+                Login
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+
+          <Animated.View
+            entering={FadeInDown.delay(600).duration(1000).springify()}
+            style={{
+              flexDirection: "row", // flex-row
+              justifyContent: "center", // justify-center
+            }}
+          ></Animated.View>
+        </View>
+
+        {/* <Button title="Start Messaging" onPress={handleSignIn} /> */}
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -42,11 +125,12 @@ const styles = StyleSheet.create({
     color: "white",
   },
   heading: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 100,
-    marginTop: 30,
+    marginBottom: 40,
+    marginTop: 20,
     width: 250,
+    alignItems: "center",
   },
   input: {
     width: "100%",
@@ -67,5 +151,32 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  email: {
+    backgroundColor: "rgba(0, 0, 0, 0.05)", // Light gray background
+    paddingVertical: 10, // Reduced vertical padding
+    paddingHorizontal: 15, // Horizontal padding
+    borderRadius: 10, // Rounded corners
+    width: "100%", // Width of the TextInput
+    height: 45, // Fixed height
+    marginBottom: 10, // Margin at the bottom
+    width: 300,
+  },
+  password: {
+    backgroundColor: "rgba(0, 0, 0, 0.05)", // Light gray background
+    paddingVertical: 10, // Reduced vertical padding
+    paddingHorizontal: 20, // Horizontal padding
+    borderRadius: 10, // Rounded corners
+    width: "100%", // Width of the TextInput
+    height: 45, // Fixed height
+    marginBottom: 10, // Margin at the bottom
+    width: 300,
+  },
+  loginButton: {
+    width: "100%", // w-full
+    backgroundColor: "#000080",
+    padding: 12, // p-3
+    borderRadius: 15, // rounded-2xl
+    marginBottom: 12, // mb-3
   },
 });

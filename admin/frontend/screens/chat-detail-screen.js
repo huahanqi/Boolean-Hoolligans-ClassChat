@@ -1,6 +1,6 @@
 // export default EventDetailScreen;
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -16,9 +16,10 @@ import {
 import axios from "axios";
 import ChatMessages from "../components/chats/chat-messages";
 import { Entypo } from "@expo/vector-icons";
+import { AuthContext } from "../context/AuthContext";
 
-//const API_ENDPOINT = "http://localhost:4000/api";
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+const API_ENDPOINT = "http://localhost:4000/api";
+//const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
 
 const ChatDetailScreen = ({ route, navigation }) => {
   const { title, description, wiki } = route.params;
@@ -26,6 +27,8 @@ const ChatDetailScreen = ({ route, navigation }) => {
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
   const keyboardVerticalOffset = Platform.OS === "ios" ? 100 : 0;
+
+  const { userToken } = useContext(AuthContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -55,6 +58,9 @@ const ChatDetailScreen = ({ route, navigation }) => {
           params: {
             name: title,
           },
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
         }
       )
       .then((res) => {
@@ -83,6 +89,9 @@ const ChatDetailScreen = ({ route, navigation }) => {
         params: {
           name: title,
           messageId: messageToDelete._id,
+        },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
         },
       });
       //console.log("success");
