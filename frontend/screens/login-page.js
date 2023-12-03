@@ -35,14 +35,6 @@ export default function LoginPage(props) {
       Alert.alert("password required");
     } else {
       login(email, password);
-      console.log(userToken);
-      if (userToken != null) {
-        props.navigation.navigate("Home");
-      } else {
-        Alert.alert("Login failed", `Invalid user information`, [
-          { text: "Try again" },
-        ]);
-      }
     }
   };
 

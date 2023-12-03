@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import useAxios from "axios-hooks";
 import axios from "axios";
+import { Alert } from "react-native";
+
 export const AuthContext = createContext();
 
 const API_ENDPOINT = "http://localhost:4000/api";
@@ -23,7 +25,9 @@ export const AuthProvider = ({ children }) => {
         setUserToken(res.data.token);
       })
       .catch((e) => {
-        console.log(e);
+        Alert.alert("Login failed", `Invalid user information`, [
+          { text: "Try again" },
+        ]);
       });
     setIsLoading(false);
   };
