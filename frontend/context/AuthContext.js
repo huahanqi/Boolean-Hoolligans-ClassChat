@@ -11,7 +11,7 @@ const API_ENDPOINT = "http://localhost:4000/api";
 export const AuthProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  //const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
   const login = (email, password) => {
     setIsLoading(true);
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
         password,
       })
       .then((res) => {
-        //setUserInfo(res.data.user);
+        setUserInfo(res.data.user);
         setUserToken(res.data.token);
       })
       .catch((e) => {
@@ -60,9 +60,9 @@ export const AuthProvider = ({ children }) => {
             register,
             userToken,
             isLoading,
-            //userInfo,
+            userInfo,
             setIsLoading,
-            //setUserInfo,
+            setUserInfo,
             setUserToken,
           }}
         >
