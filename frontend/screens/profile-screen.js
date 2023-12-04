@@ -1,13 +1,25 @@
-import { Text, StyleSheet, SafeAreaView, Image, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  View,
+  Button,
+} from "react-native";
 import React, { useContext, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { AuthContext } from "../context/AuthContext";
 
 export const ProfilesScreen = () => {
-  const userInfo = { name: "Buzz", email: "buzz@gatech.edu", password: "pswd" };
-  const [showPassword, setShowPassWord] = useState(false);
-  const handleClickIcon = () => {
-    curr = !showPassword;
-    setShowPassWord(curr);
+  const { userInfo, userToken, setUserInfo, setUserToken } =
+    useContext(AuthContext);
+  //const [showPassword, setShowPassWord] = useState(false);
+  // const handleClickIcon = () => {
+  //   curr = !showPassword;
+  //   setShowPassWord(curr);
+  // };
+  const logout = () => {
+    setUserInfo(null);
+    setUserToken(null);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -16,9 +28,12 @@ export const ProfilesScreen = () => {
         source={require("../assets/logos/gt_logo.png")}
       ></Image>
       <View style={{ align: "left" }}>
-        <Text style={styles.text}>{`UserName: ${userInfo.name}`}</Text>
-        <Text style={styles.text}>{`Email Address: ${userInfo.email}`} </Text>
-        {!showPassword ? (
+        <Text style={styles.text}>{`UserName: ${userInfo.firstName}`}</Text>
+        <Text style={styles.text}>
+          {`Email Address: ${userInfo.username}`}{" "}
+        </Text>
+        <Button onPress={logout} title="Log out" color="#841584" />
+        {/* {!showPassword ? (
           <View style={{ display: "flex", flexDirection: "row" }}>
             <Text style={styles.text}>{`Password: ${"*".repeat(
               userInfo.password.length
@@ -38,7 +53,7 @@ export const ProfilesScreen = () => {
               onPress={handleClickIcon}
             ></Ionicons>
           </View>
-        )}
+        )} */}
       </View>
     </SafeAreaView>
   );

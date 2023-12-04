@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Alert } from "react-native";
+import { AuthContext } from "../context/AuthContext";
 
 //const API_ENDPOINT = "http://localhost:4000/api";
 const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
@@ -20,12 +21,18 @@ export const AddCourseScreen = ({ navigation }) => {
     description: "",
     wiki: "",
   });
+  const { userToken } = useContext(AuthContext);
   const createCourse = async () => {
     await axios
       .post(`${API_ENDPOINT}/group`, {
-        name: group.name,
-        description: group.description,
-        wiki: group.wiki,
+        params: {
+          name: group.name,
+          description: group.description,
+          wiki: group.wiki,
+        },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
       })
       .then((res) => {
         Alert.alert("Success", `Course Chat for ${res.data.name} Created! 🎉`, [

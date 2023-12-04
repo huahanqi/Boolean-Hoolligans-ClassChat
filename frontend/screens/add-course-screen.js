@@ -12,9 +12,8 @@ import { FlatList } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import { CourseContext } from "../context/CourseContext";
 import axios from "axios";
-
-// const API_ENDPOINT = "http://localhost:4000/api";
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+import { AuthContext } from "../context/AuthContext";
+import { API_ENDPOINT } from "../config";
 
 export const AddCourseScreen = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,11 +22,17 @@ export const AddCourseScreen = ({ navigation }) => {
   const { courses, addCourse } = useContext(CourseContext);
   const [showImage, setShowImage] = useState(true);
 
+  const { userToken } = useContext(AuthContext);
+
   // Fetch allCourses from API
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get(`${API_ENDPOINT}/group`);
+        const response = await axios.get(`${API_ENDPOINT}/group`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
         setAllCourses(response.data);
       } catch (error) {
         console.error("Failed to fetch groups:", error);
@@ -43,8 +48,7 @@ export const AddCourseScreen = ({ navigation }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, []); 
-
+  }, []);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -112,7 +116,9 @@ export const AddCourseScreen = ({ navigation }) => {
         )}
       </View>
       {showImage && (
-        <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+        <View
+          style={{ flex: 1, justifyContent: "flex-end", alignItems: "center" }}
+        >
           <Image
             style={styles.logo}
             source={require("../assets/logos/mcdonalds_ad.jpg")}
@@ -120,7 +126,6 @@ export const AddCourseScreen = ({ navigation }) => {
         </View>
       )}
     </View>
-
   );
 };
 

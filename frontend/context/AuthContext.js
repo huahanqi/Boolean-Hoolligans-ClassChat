@@ -1,47 +1,69 @@
 import React, { createContext, useState, useEffect } from "react";
 import useAxios from "axios-hooks";
+import axios from "axios";
+import { Alert } from "react-native";
+import { API_ENDPOINT } from "../config";
 
-const defaultUser = {
-  casUser: "Not authenticated",
-  admin: false,
-  firstName: null,
-  lastName: null,
-};
-
-export const AuthContext = createContext(defaultUser);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [userToken, setUserToken] = useState("default");
+  const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  // const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
-  const [{ data }, fetchUser] = useAxios(
-    {
-      url: "/cas/user",
-    },
-    { manual: true }
-  );
-
-  async function onLoad() {
-    try {
-      await fetchUser();
-    } catch (e) {}
-
+  const login = (email, password) => {
+    setIsLoading(true);
+    axios
+      .post(`${API_ENDPOINT}/user/login`, {
+        username: email.toLowerCase(),
+        password,
+      })
+      .then((res) => {
+        setUserInfo(res.data.user);
+        setUserToken(res.data.token);
+      })
+      .catch((e) => {
+        Alert.alert("Login failed", `Invalid user information`, [
+          { text: "Try again" },
+        ]);
+      });
     setIsLoading(false);
-  }
+  };
 
-  useEffect(() => {
-    onLoad();
-  }, []);
+  const register = (email, password, username) => {
+    setIsLoading(true);
+    axios
+      .post(`${API_ENDPOINT}/user/register`, {
+        username: email.toLowerCase(),
+        password,
+        firstName: username,
+        lastName: username,
+        admin: false,
+      })
+      .then((res) => {
+        Alert.alert("Success! \nNow back to login page 😄");
+      })
+      .catch((e) => {
+        Alert.alert("Register Failed. Double check info entered");
+      });
+    setIsLoading(false);
+  };
 
-  // const login = () => {
-  //   setUserInfo("res.data.user");
-  //   setUserToken("res.data.token");
-  // };
   return (
     <>
       {!isLoading && (
-        <AuthContext.Provider value={{ isLoading, userToken }}>
+        <AuthContext.Provider
+          value={{
+            login,
+            register,
+            userToken,
+            isLoading,
+            userInfo,
+            setIsLoading,
+            setUserInfo,
+            setUserToken,
+          }}
+        >
           {children}
         </AuthContext.Provider>
       )}
