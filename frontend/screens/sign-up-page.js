@@ -40,16 +40,13 @@ export default function SignUpPage(props) {
       confirmPassword == ""
     ) {
       Alert.alert("Please fill out all fields.");
-    }
-    if (password != confirmPassword) {
+    } else if (password != confirmPassword) {
       Alert.alert("Please make sure your passwords match");
-    }
-
-    if (!email.toLowerCase().endsWith("@gatech.edu")) {
+    } else if (!email.toLowerCase().endsWith("@gatech.edu")) {
       Alert.alert("Please use a valid GT email address.");
+    } else {
+      register(email, password, userName);
     }
-
-    register(email, password, userName);
   };
 
   return (
