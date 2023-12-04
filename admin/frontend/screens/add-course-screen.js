@@ -11,9 +11,7 @@ import axios from "axios";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Alert } from "react-native";
 import { AuthContext } from "../context/AuthContext";
-
-//const API_ENDPOINT = "http://localhost:4000/api";
-const API_ENDPOINT = "https://booleanhoolligans-8pravvog.b4a.run/api";
+import { API_ENDPOINT } from "../../config";
 
 export const AddCourseScreen = ({ navigation }) => {
   const [group, setGroup] = useState({

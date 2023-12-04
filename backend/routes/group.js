@@ -5,9 +5,9 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const newGroup = await createNewGroup(
-      req.body.name,
-      req.body.description,
-      req.body.wiki
+      req.body.params.name,
+      req.body.params.description,
+      req.body.params.wiki
     );
     res.status(200).send(newGroup);
   } catch (error) {
